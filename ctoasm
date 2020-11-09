@@ -2,8 +2,8 @@
 FILE=$1
 if test -f "$FILE" && [[ $FILE == *.c ]]; then
     gcc $FILE -S -masm=intel -fno-asynchronous-unwind-tables
-    ASMFILE=$(echo "$FILE" | tr .c .s)
-    cat $ASMFILE
+    ASMFILE=$(echo "$FILE" | cut -f 1 -d '.')
+    cat "${ASMFILE}.s"
 else
     echo "'$FILE' does not exist or is not a regular file or does not end with '*.c'"
 
