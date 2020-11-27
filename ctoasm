@@ -11,9 +11,9 @@ if  [ $# -eq 1 ]; then
 
     fi
 
-elif [ "$2" = 'o' ]; then
+elif [ $# -eq 2 ]; then
     if test -f "$FILE" && [[ $FILE == *.c ]]; then
-        gcc $FILE -S -O2 -masm=intel -fno-asynchronous-unwind-tables
+        gcc $FILE -S -O$2 -masm=intel -fno-asynchronous-unwind-tables
         ASMFILE=$(echo "$FILE" | cut -f 1 -d '.')
         cat "${ASMFILE}.s"
     else
@@ -23,5 +23,7 @@ elif [ "$2" = 'o' ]; then
 else
     echo "Usage: FILE o"
 fi
+
+rm -rf $ASMFILE.s
    
 
