@@ -6,8 +6,13 @@ if  [ $# -eq 1 ]; then
         gcc $FILE -S -masm=intel -fno-asynchronous-unwind-tables
         ASMFILE=$(echo "$FILE" | cut -f 1 -d '.')
         cat "${ASMFILE}.s"
+
+    elif test -f "$FILE" && [[ $FILE == *.cpp ]]; then
+        g++ $FILE -S -masm=intel -fno-asynchronous-unwind-tables
+        ASMFILE=$(echo "$FILE" | cut -f 1 -d '.')
+        cat "${ASMFILE}.s"
     else
-        echo "'$FILE' does not exist or is not a regular file or does not end with '*.c'"
+        echo "'$FILE' does not exist or is not a regular file or does not end with '*.c' or '*.cpp'"
 
     fi
 
@@ -16,12 +21,18 @@ elif [ $# -eq 2 ]; then
         gcc $FILE -S -O$2 -masm=intel -fno-asynchronous-unwind-tables
         ASMFILE=$(echo "$FILE" | cut -f 1 -d '.')
         cat "${ASMFILE}.s"
+
+    elif test -f "$FILE" && [[ $FILE == *.cpp ]]; then
+        g++ $FILE -S -O$2 -masm=intel -fno-asynchronous-unwind-tables
+        ASMFILE=$(echo "$FILE" | cut -f 1 -d '.')
+        cat "${ASMFILE}.s"
+
     else
         echo "'$FILE' does not exist or is not a regular file or does not end with '*.c'"
 
     fi
 else
-    echo "Usage: FILE o"
+    echo "Usage: ctoasm FILE 3"
 fi
 
 rm -rf $ASMFILE.s
